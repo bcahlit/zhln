@@ -10,6 +10,7 @@ import com.mobile.bcahlic.zhln.R;
 import com.mobile.bcahlic.zhln.base.BaseMenuDetailPage;
 import com.mobile.bcahlic.zhln.base.TableDetailPage;
 import com.mobile.bcahlic.zhln.doman.NewsData;
+import com.viewpagerindicator.TabPageIndicator;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,7 @@ public class NewsMenuDetailPager extends BaseMenuDetailPage {
     private ViewPager menudetail;
     private ArrayList<NewsData.NewsTabData> myNewsTableDate;
     private ArrayList<TableDetailPage> mPageList;
+    private TabPageIndicator indicator;
 
     public NewsMenuDetailPager(Activity activity, ArrayList<NewsData.NewsTabData> children) {
         super(activity);
@@ -31,6 +33,7 @@ public class NewsMenuDetailPager extends BaseMenuDetailPage {
     public View initView() {
         View view = View.inflate(mactivity, R.layout.news_menu_detail, null);
         menudetail = (ViewPager) view.findViewById(R.id.vp_menu_detail);
+        indicator = (TabPageIndicator)view.findViewById(R.id.indicator);
         return view;
     }
 
@@ -42,6 +45,7 @@ public class NewsMenuDetailPager extends BaseMenuDetailPage {
             mPageList.add(tableDetailPage);
         }
         menudetail.setAdapter(new mviewpageadapter());
+        indicator.setViewPager(menudetail);
     }
 
     class mviewpageadapter extends PagerAdapter{
@@ -62,6 +66,11 @@ public class NewsMenuDetailPager extends BaseMenuDetailPage {
             container.addView(tableDetailPage.rootview);
             tableDetailPage.initdata();
             return tableDetailPage.rootview;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return myNewsTableDate.get(position).title;
         }
 
         @Override
