@@ -5,8 +5,11 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.mobile.bcahlic.zhln.R;
+import com.mobile.bcahlic.zhln.activitys.MainActivity;
 import com.mobile.bcahlic.zhln.base.BaseMenuDetailPage;
 import com.mobile.bcahlic.zhln.base.TableDetailPage;
 import com.mobile.bcahlic.zhln.doman.NewsData;
@@ -34,6 +37,34 @@ public class NewsMenuDetailPager extends BaseMenuDetailPage {
         View view = View.inflate(mactivity, R.layout.news_menu_detail, null);
         menudetail = (ViewPager) view.findViewById(R.id.vp_menu_detail);
         indicator = (TabPageIndicator)view.findViewById(R.id.indicator);
+        ImageButton btnNext = (ImageButton) view.findViewById(R.id.btn_next);
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int item = menudetail.getCurrentItem();
+                menudetail.setCurrentItem(++item);
+            }
+        });
+        indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                MainActivity manact= (MainActivity) mactivity;
+                SlidingMenu slidingMenu = manact.getSlidingMenu();
+                if (position==0){
+                    slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+                }else slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         return view;
     }
 
