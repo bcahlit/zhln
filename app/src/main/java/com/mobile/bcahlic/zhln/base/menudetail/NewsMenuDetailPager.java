@@ -95,7 +95,7 @@ public class NewsMenuDetailPager extends BaseMenuDetailPage {
         public Object instantiateItem(ViewGroup container, int position) {
             TableDetailPage tableDetailPage = mPageList.get(position);
             container.addView(tableDetailPage.rootview);
-            tableDetailPage.initdata();
+                tableDetailPage.initdata();
             return tableDetailPage.rootview;
         }
 

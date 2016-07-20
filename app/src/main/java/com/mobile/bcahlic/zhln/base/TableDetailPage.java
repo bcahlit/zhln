@@ -29,7 +29,11 @@ import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import static com.mobile.bcahlic.zhln.utils.CacheUtils.readcache;
+import static com.mobile.bcahlic.zhln.utils.CacheUtils.setcache;
 
 /**
  * Created by bcahlic on 16-7-6.
@@ -204,11 +208,18 @@ public class TableDetailPage extends BaseMenuDetailPage {
     private void getServicedata(){
         murl=GlobalContent.SERVICE_URL+mdata.url;
         RequestParams params =new RequestParams(murl);
+        String readcache = readcache(murl);
+        if (!TextUtils.isEmpty(readcache)){parseData(readcache,false);}
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 //             Log.d("Xutils",result);
                 parseData(result,false);
+                try {
+                    setcache(murl,result);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 lvnewslist.onRefreshComplete(true);
             }
             @Override

@@ -2,6 +2,7 @@ package com.mobile.bcahlic.zhln.base.impl;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -23,7 +24,11 @@ import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import static com.mobile.bcahlic.zhln.utils.CacheUtils.readcache;
+import static com.mobile.bcahlic.zhln.utils.CacheUtils.setcache;
 
 /**
  * Created by bcahlic on 16-7-4.
@@ -52,11 +57,18 @@ public class NewsPager extends BasePager {
     private void GetDataFromServer(){
         RequestParams params =new RequestParams(GlobalContent.CATEGORIES_URL);
         Log.d("URL:",GlobalContent.CATEGORIES_URL);
+        String readcache = readcache(GlobalContent.CATEGORIES_URL);
+        if (!TextUtils.isEmpty(readcache)){parseData(readcache);}
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
    //             Log.d("Xutils",result);
                 parseData(result);
+                try {
+                    setcache(GlobalContent.CATEGORIES_URL,result);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {}
