@@ -3,10 +3,13 @@ package com.mobile.bcahlic.zhln.base;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -51,6 +54,7 @@ public class TableDetailPage extends BaseMenuDetailPage {
     private ArrayList<TabData.TabNewsData> newsdetail;
     private String moreurl=null;
     private NewsAsapter newsAsapter;
+    private Handler cyclehandler;
 
     public TableDetailPage(Activity activity, NewsData.NewsTabData newsTabData) {
         super(activity);
@@ -65,9 +69,10 @@ public class TableDetailPage extends BaseMenuDetailPage {
         mviewpager= (ViewPager) newstitle.findViewById(R.id.vp_news);
         tvTitle = (TextView) newstitle.findViewById(R.id.tv_title);
         indicator = (CirclePageIndicator) newstitle.findViewById(R.id.indicator);
-
         lvnewslist = (RefreshLIstview) view.findViewById(R.id.lv_list);
+
         lvnewslist.addHeaderView(newstitle);
+
         lvnewslist.setOnRefreshListener(new RefreshLIstview.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -169,19 +174,47 @@ public class TableDetailPage extends BaseMenuDetailPage {
         }
 
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(ViewGroup container, final int position) {
             ImageView mimage=new ImageView(mactivity);
             mimage.setImageResource(R.drawable.topnews_item_default);
             mimage.setScaleType(ImageView.ScaleType.FIT_XY);//基于控件大小设置图片大小
 
             x.image().bind(mimage,tabData.data.topnews.get(position).topimage);
             container.addView(mimage);
+         //   mimage.setOnTouchListener(new TopNewsTouchListener());
+            mimage.setOnClickListener(new View.OnClickListener() {//ImageView的TouchListener事件与OnClick事件好象是有冲突。。
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent();
+                    intent.setClass(mactivity,webView.class);
+                    intent.putExtra("url",tabData.data.topnews.get(position).url);
+                    mactivity.startActivity(intent);
+                }
+            });
             return mimage;
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((View) object);
+        }
+    }
+    class TopNewsTouchListener implements View.OnTouchListener{
+
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            switch (motionEvent.getAction()){
+                case MotionEvent.ACTION_DOWN:
+                    cyclehandler.removeCallbacksAndMessages(null);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    cyclehandler.sendEmptyMessageDelayed(1,3000);
+                    break;
+                case MotionEvent.ACTION_CANCEL:
+                    cyclehandler.sendEmptyMessageDelayed(1,3000);
+                default: break;
+            }
+            return true;
         }
     }
     @Override
@@ -278,6 +311,25 @@ public class TableDetailPage extends BaseMenuDetailPage {
             indicator.onPageSelected(0);
             tvTitle.setText(tabData.data.topnews.get(0).title);
         }
+        cyclehandler =  new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                int current=mviewpager.getCurrentItem();
 
+                int pagemax=mviewpager.getChildCount();
+                if (current < pagemax) {
+                    current++;
+                } else {
+                    current = 0;
+                }
+                indicator.setCurrentItem(current);
+                int what = msg.what;
+                Log.d("Handle",what+"");
+                cyclehandler.removeCallbacksAndMessages(null);
+                cyclehandler.sendEmptyMessageDelayed(1,3000);
+            }
+        };
+        cyclehandler.sendEmptyMessageDelayed(0,3000);
     }
 }

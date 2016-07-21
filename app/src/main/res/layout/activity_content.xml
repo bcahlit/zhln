@@ -14,33 +14,38 @@
         android:id="@+id/rg_group"
         android:background="@drawable/bottom_tab_bg"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="85dp"
         android:orientation="horizontal">
         <RadioButton
             android:id="@+id/home"
             style="@style/Buttom_btn"
             android:drawableTop="@drawable/home_main_select"
-            android:text="首页" />
+            android:text="首页"
+            android:textSize="15dp" />
         <RadioButton
             android:id="@+id/news"
             style="@style/Buttom_btn"
             android:drawableTop="@drawable/news_main_select"
-            android:text="新闻中心" />
+            android:text="新闻中心"
+            android:textSize="15dp" />
         <RadioButton
             android:id="@+id/smart"
             style="@style/Buttom_btn"
             android:drawableTop="@drawable/service_main_select"
-            android:text="智慧服务" />
+            android:text="智慧服务"
+            android:textSize="15dp"/>
         <RadioButton
             android:id="@+id/gov"
             style="@style/Buttom_btn"
             android:drawableTop="@drawable/gov_main_select"
-            android:text="政务" />
+            android:text="政务"
+            android:textSize="15dp" />
         <RadioButton
             android:id="@+id/setting"
             style="@style/Buttom_btn"
             android:drawableTop="@drawable/service_main_select"
-            android:text="设置" />
+            android:text="设置"
+            android:textSize="15dp" />
 
     </RadioGroup>
 </LinearLayout>
