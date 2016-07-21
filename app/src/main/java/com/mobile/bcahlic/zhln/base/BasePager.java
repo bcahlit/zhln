@@ -19,6 +19,8 @@ public class BasePager {
     public FrameLayout flcontext;
     public ImageButton button;
     public View rl_root;
+    public ImageButton btPhoto;
+
     protected BasePager(Activity context){
         mcontext=context;
         initView();
@@ -28,6 +30,8 @@ public class BasePager {
         title = (TextView) view.findViewById(R.id.tv_title);
         flcontext = (FrameLayout) view.findViewById(R.id.fl_content);
         button = (ImageButton) view.findViewById(R.id.btn_menu);
+        btPhoto = (ImageButton) view.findViewById(R.id.btn_photo);
+
         rl_root=view;
         button.setOnClickListener(new View.OnClickListener() {
             @Override

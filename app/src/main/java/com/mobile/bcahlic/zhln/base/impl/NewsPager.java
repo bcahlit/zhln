@@ -93,7 +93,7 @@ public class NewsPager extends BasePager {
         Log.d("NewsCenterPager1111111",newsData.data.get(0).children.toString());
         mMenuDetail.add(new NewsMenuDetailPager(mcontext,newsData.data.get(0).children));
         mMenuDetail.add(new TopicMenuDetailPager(mcontext));
-        mMenuDetail.add(new PhotoMenuDetailPager(mcontext));
+        mMenuDetail.add(new PhotoMenuDetailPager(mcontext,btPhoto));
         mMenuDetail.add(new InteractMenuDetailPager(mcontext));
         setCurrentMenuDetailPager(0);
     }
@@ -103,8 +103,14 @@ public class NewsPager extends BasePager {
         BaseMenuDetailPage page = mMenuDetail.get(i);
         flcontext.removeAllViews();
         flcontext.addView(page.rootview);
+
         title.setText(newsData.data.get(i).title);
         page.initdata();
+        if (page instanceof PhotoMenuDetailPager) {
+            btPhoto.setVisibility(View.VISIBLE);
+        } else {
+            btPhoto.setVisibility(View.GONE);
+        }
     }
 
 }

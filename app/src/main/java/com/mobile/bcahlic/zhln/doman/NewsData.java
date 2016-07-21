@@ -42,4 +42,5 @@ public class NewsData {
     public String toString() {
         return "NewsData [data=" + data + "]";
     }
+
 }
